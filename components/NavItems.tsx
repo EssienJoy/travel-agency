@@ -1,18 +1,21 @@
 import React from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useLoaderData, useNavigate } from "react-router";
+import { logoutUser } from "~/appwrite/auth";
 import { sidebarItems } from "~/constants";
 import { cn } from "~/lib/utils";
 
 const NavItems = ({ handleClick }: { hancleClick?: () => void }) => {
-	const user = {
-		name: "Adrian",
-		email: "adrian@gmail.com",
-		imageUrl: "/assets/images/david.webp",
+	const user = useLoaderData();
+	const navigate = useNavigate();
+
+	const handleLogout = async () => {
+		await logoutUser();
+		navigate("/signin");
 	};
 	return (
 		<section className='nav-items'>
 			<Link to='/' className='link-logo'>
-				<img src='/assets/icons/logo.svg' alt='logo' className='size-[30px]' />
+				<img src='/assets/icons/logo.svg' alt='logo' className='size-7.5' />
 				<h1>Tourvisto</h1>
 			</Link>
 
@@ -43,6 +46,7 @@ const NavItems = ({ handleClick }: { hancleClick?: () => void }) => {
 					<img
 						src={user.imageUrl || "/assets/images/david.webp"}
 						alt={user?.name || "David"}
+						referrerPolicy='no-referrer'
 					/>
 
 					<article>
@@ -50,11 +54,7 @@ const NavItems = ({ handleClick }: { hancleClick?: () => void }) => {
 						<p>{user?.email}</p>
 					</article>
 
-					<button
-						className='cursor-pointer'
-						onClick={() => {
-							console.log("Logout");
-						}}>
+					<button className='cursor-pointer' onClick={handleLogout}>
 						<img
 							src='/assets/icons/logout.svg'
 							alt='logout'

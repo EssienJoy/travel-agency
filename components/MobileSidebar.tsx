@@ -13,11 +13,7 @@ const MobileSidebar = () => {
     wrapper'>
 			<header>
 				<Link to='/' className='link-logo'>
-					<img
-						src='/assets/icons/logo.svg'
-						alt='logo'
-						className='size-[30px]'
-					/>
+					<img src='/assets/icons/logo.svg' alt='logo' className='size-7.5' />
 					<h1>Tourvisto</h1>
 				</Link>{" "}
 				<button
@@ -30,7 +26,7 @@ const MobileSidebar = () => {
 			<SidebarComponent
 				width={270}
 				ref={(Sidebar) => (sidebar = Sidebar)}
-				created={() => sidebar.hide()}
+				created={() => sidebar?.hide()}
 				closeOnDocumentClick={true}
 				showBackdrop={true}
 				type='over'>
