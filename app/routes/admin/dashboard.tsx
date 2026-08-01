@@ -47,7 +47,7 @@ export const clientLoader = async () => {
 	const allTrips = trips.allTrips.map(({ $id, tripDetail, imageUrls }) => ({
 		id: $id,
 		...parseTripData(tripDetail),
-		imageUrls: imageUrls ?? [],
+		imageUrls: imageUrls,
 	}));
 
 	// console.log(allTrips);
@@ -70,14 +70,17 @@ export const clientLoader = async () => {
 
 const Dashboard = ({ loaderData }: Route.ComponentProps) => {
 	const user = loaderData.user as User | null;
+	// console.log(user);
 	const { dashboardStats, allTrips, userGrowth, tripsByTravelStyle, allUsers } =
 		loaderData;
 
 	const trips = allTrips.map((trip) => ({
-		imageUrl: trip.imageUrls[0],
+		imageUrl: trip.imageUrls[0] ?? [],
 		name: trip.name,
 		interest: trip.interests,
 	}));
+
+	// console.log(trips);
 
 	const usersAndTrips = [
 		{
@@ -226,7 +229,7 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
 									template={(props: UserData) => (
 										<div className='flex items-center gap-1.5 px-4'>
 											<img
-												src={props.imageUrl}
+												src={props.imageUrl ?? "/assets/images/icon.jpg"}
 												alt='user'
 												className='rounded-full size-8 aspect-square'
 												referrerPolicy='no-referrer'

@@ -7,6 +7,7 @@ import {
 
 export default [
 	route("signin", "routes/root/sign-in.tsx"),
+	route("signup", "routes/root/sign-up.tsx"),
 	route("api/create-trip", "routes/api/create-trip.ts"),
 	layout("routes/admin/admin-layout.tsx", [
 		route("dashboard", "routes/admin/dashboard.tsx"),

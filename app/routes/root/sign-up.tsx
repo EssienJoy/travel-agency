@@ -1,9 +1,10 @@
-import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
+import { Link } from "react-router";
 import { useState } from "react";
-
-import { Link, redirect, useNavigate } from "react-router";
-import { loginWithEmail, loginWithGoogle } from "~/appwrite/auth";
+import { useNavigate } from "react-router";
+import { loginWithGoogle, signUpWithEmail } from "~/appwrite/auth";
+import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { account } from "~/appwrite/client";
+import { redirect } from "react-router";
 
 export async function clientLoader() {
 	try {
@@ -15,10 +16,11 @@ export async function clientLoader() {
 	}
 }
 
-const SignIn = () => {
+const SignUp = () => {
 	const navigate = useNavigate();
 
 	const [form, setForm] = useState({
+		name: "",
 		email: "",
 		password: "",
 	});
@@ -38,10 +40,10 @@ const SignIn = () => {
 		setLoading(true);
 
 		try {
-			await loginWithEmail(form.email, form.password);
+			await signUpWithEmail(form.name, form.email, form.password);
 			navigate("/");
 		} catch (err) {
-			console.error("Unable to log in user.", err);
+			console.error("Unable to create account.", err);
 		} finally {
 			setLoading(false);
 		}
@@ -51,47 +53,30 @@ const SignIn = () => {
 		<main className='auth'>
 			<section className='size-full glassmorphism flex-center px-6'>
 				<div className='sign-in-card'>
-					<header className='header'>
-						<Link to='/'>
-							<img
-								src='/assets/icons/logo.svg'
-								alt='logo'
-								className='size-7.5'
-							/>
-						</Link>
-						<h2 className='p-28-bold text-dark-100'>Tourvisto</h2>
-					</header>
-
 					<article>
 						<h2 className='text-center p-28-bold text-dark-100'>
-							Start Your Travel Journey
+							Create Account
 						</h2>
-						<p className='p-18-regular text-center text-gray-100 leading-7'>
-							Sign in with Google to explore AI-generated itineraries, trending
-							destinations, and much more
-						</p>
-						<ButtonComponent
-							type='button'
-							iconCss='e-search-icon'
-							className='button-class h-11 w-full'
-							onClick={loginWithGoogle}>
-							<img
-								src='/assets/icons/google.svg'
-								className='size-4'
-								alt='google'
-							/>
-							<span className='p-18-semibold text-white'>
-								Sign in with Google
-							</span>
-						</ButtonComponent>
-					</article>
 
-					<article>
+						<p className='p-18-regular text-center text-gray-100 mb-6'>
+							Sign up to start creating AI-powered travel itineraries.
+						</p>
+
 						<form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+							<input
+								type='text'
+								name='name'
+								placeholder='Full Name'
+								value={form.name}
+								onChange={handleChange}
+								required
+								className='input'
+							/>
+
 							<input
 								type='email'
 								name='email'
-								placeholder='test@gmail.com'
+								placeholder='Email Address'
 								value={form.email}
 								onChange={handleChange}
 								required
@@ -101,7 +86,7 @@ const SignIn = () => {
 							<input
 								type='password'
 								name='password'
-								placeholder='12345678'
+								placeholder='Password'
 								value={form.password}
 								onChange={handleChange}
 								required
@@ -115,19 +100,43 @@ const SignIn = () => {
 								disabled={loading}
 								className='button-class h-11 w-full'>
 								<span className='p-18-semibold text-white'>
-									{loading ? "Logging..." : "Log in"}
+									{loading ? "Creating Account..." : "Create Account"}
 								</span>
 							</ButtonComponent>
 						</form>
-					</article>
 
-					<Link to='/signup' className='text-center'>
-						<p>Sign up with email and password</p>
-					</Link>
+						<div className='my-5 flex items-center gap-3'>
+							<div className='h-px flex-1 bg-gray-300' />
+							<span>OR</span>
+							<div className='h-px flex-1 bg-gray-300' />
+						</div>
+
+						<ButtonComponent
+							type='button'
+							className='button-class h-11 w-full'
+							onClick={loginWithGoogle}>
+							<img
+								src='/assets/icons/google.svg'
+								className='size-4'
+								alt='google'
+							/>
+
+							<span className='p-18-semibold text-white'>
+								Continue with Google
+							</span>
+						</ButtonComponent>
+
+						<p className='text-center mt-5'>
+							Already have an account?{" "}
+							<Link to='/signin' className='text-blue-500'>
+								Sign In
+							</Link>
+						</p>
+					</article>
 				</div>
 			</section>
 		</main>
 	);
 };
 
-export default SignIn;
+export default SignUp;

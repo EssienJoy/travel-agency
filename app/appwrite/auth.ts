@@ -118,3 +118,30 @@ export const getAllUsers = async (limit: number, offset: number) => {
 		return { users: [], total: 0 };
 	}
 };
+
+export const signUpWithEmail = async (
+	name: string,
+	email: string,
+	password: string,
+) => {
+	try {
+		const user = await account.create(ID.unique(), email, password, name);
+
+		await account.createEmailPasswordSession({ email, password });
+
+		return user;
+	} catch (e) {
+		console.log("Error Creating User", e);
+		throw e;
+	}
+};
+
+export const loginWithEmail = async (email: string, password: string) => {
+	try {
+		const user = await account.createEmailPasswordSession({ email, password });
+		return user;
+	} catch (e) {
+		console.error("Error logging user", e);
+		throw e;
+	}
+};
