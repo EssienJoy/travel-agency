@@ -74,6 +74,8 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
 	const { dashboardStats, allTrips, userGrowth, tripsByTravelStyle, allUsers } =
 		loaderData;
 
+	// console.log(allUsers);
+
 	const trips = allTrips.map((trip) => ({
 		imageUrl: trip.imageUrls[0] ?? [],
 		name: trip.name,
@@ -96,6 +98,7 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
 			headerText: "Interests",
 		},
 	];
+	// console.log(usersAndTrips[0].dataSource);
 
 	return (
 		<main className='dashboard wrapper'>
@@ -104,6 +107,7 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
 				description='Track activity, trends and popular destinations in real time'
 			/>
 
+			{/* Stats */}
 			<section className='flex flex-col gap-6'>
 				<div className='grid grid-cols-1 md:grid-cols-3 gap-6 w-full'>
 					<StatsCard
@@ -126,6 +130,8 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
 					/>
 				</div>
 			</section>
+
+			{/* Trip Grid */}
 			<section className='container'>
 				<h1 className='text-xl font-semibold text-dark-100'>Created Trips</h1>
 
@@ -144,6 +150,7 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
 				</div>
 			</section>
 
+			{/* Graph */}
 			<section className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
 				<ChartComponent
 					id='chart-1'
@@ -214,6 +221,7 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
 				</ChartComponent>
 			</section>
 
+			{/* Users and Trips */}
 			<section className='user-trip wrapper'>
 				{usersAndTrips.map(({ title, dataSource, field, headerText }, i) => (
 					<div key={i} className='flex flex-col gap-5'>
